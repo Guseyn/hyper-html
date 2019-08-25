@@ -39,10 +39,6 @@ var _require2 = require('@page-libs/ajax'),
 var _require3 = require('@page-libs/dom'),
     UnwrappedChildrenOfParent = _require3.UnwrappedChildrenOfParent;
 
-var AttributeWithAppliedLocalStorageVariables = require('./../async/AttributeWithAppliedLocalStorageVariables');
-
-var AttributeWithAppliedMemoryStorageVariables = require('./../async/AttributeWithAppliedMemoryStorageVariables');
-
 var ElementWithAppliedDataTextAndValueAttributesForChildNodes = require('./../async/ElementWithAppliedDataTextAndValueAttributesForChildNodes');
 
 var HTMLTunedElement = require('./../objects/HTMLTunedElement');
@@ -65,7 +61,7 @@ function (_HTMLTunedElement) {
   _createClass(EJSON, [{
     key: "render",
     value: function render() {
-      new ParsedJSON(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', this.getAttribute('data-method') || 'GET', 'headers', new ParsedJSON(new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))), new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-request-body'))))))).as('RESPONSE').after(new TheSameObjectWithValue(this.cache, this.getAttribute('data-object'), as('RESPONSE')).after(new UnwrappedChildrenOfParent(new ElementWithAppliedDataTextAndValueAttributesForChildNodes(this, this.cache)))).call();
+      new ParsedJSON(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', this.getAttribute('data-method') || 'GET', 'headers', new ParsedJSON(this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))), this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-request-body'))))))).as('RESPONSE').after(new TheSameObjectWithValue(this.cache, this.getAttribute('data-object'), as('RESPONSE')).after(new UnwrappedChildrenOfParent(new ElementWithAppliedDataTextAndValueAttributesForChildNodes(this, this.cache)))).call();
     }
   }], [{
     key: "observedAttributes",

@@ -39,9 +39,6 @@ const elementWithAttribute = (attrName, value, ...children) => {
     getAttribute: (attrName) => {
       return elm.attrs[attrName]
     },
-    getAttributeNames: () => {
-      return Object.keys(elm.attrs)
-    },
     setAttribute: (attrName, value) => {
       elm.attrs[attrName] = value
     },

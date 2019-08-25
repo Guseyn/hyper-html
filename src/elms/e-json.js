@@ -6,8 +6,6 @@ const { ParsedJSON } = browserified(require('@cuties/json'))
 const { StringFromBuffer } = browserified(require('@cuties/buffer'))
 const { ResponseFromAjaxRequest, ResponseBody } = require('@page-libs/ajax')
 const { UnwrappedChildrenOfParent } = require('@page-libs/dom')
-const AttributeWithAppliedLocalStorageVariables = require('./../async/AttributeWithAppliedLocalStorageVariables')
-const AttributeWithAppliedMemoryStorageVariables = require('./../async/AttributeWithAppliedMemoryStorageVariables')
 const ElementWithAppliedDataTextAndValueAttributesForChildNodes = require('./../async/ElementWithAppliedDataTextAndValueAttributesForChildNodes')
 const HTMLTunedElement = require('./../objects/HTMLTunedElement')
 
@@ -27,22 +25,22 @@ class EJSON extends HTMLTunedElement {
         new ResponseBody(
           new ResponseFromAjaxRequest(
             new CreatedOptions(
-              'url', new AttributeWithAppliedLocalStorageVariables(
-                new AttributeWithAppliedMemoryStorageVariables(
+              'url', this.attributeWithAppliedLocalStorageVariables(
+                this.attributeWithAppliedMemoryStorageVariables(
                   this.getAttribute('data-src')
                 )
               ),
               'method', this.getAttribute('data-method') || 'GET',
               'headers', new ParsedJSON(
-                new AttributeWithAppliedLocalStorageVariables(
-                  new AttributeWithAppliedMemoryStorageVariables(
+                this.attributeWithAppliedLocalStorageVariables(
+                  this.attributeWithAppliedMemoryStorageVariables(
                     this.getAttribute('data-headers') || '{}'
                   )
                 )
               )
             ),
-            new AttributeWithAppliedLocalStorageVariables(
-              new AttributeWithAppliedMemoryStorageVariables(
+            this.attributeWithAppliedLocalStorageVariables(
+              this.attributeWithAppliedMemoryStorageVariables(
                 this.getAttribute('data-request-body')
               )
             )

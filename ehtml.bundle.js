@@ -7532,11 +7532,38 @@ function (_HTMLTunedElement) {
 
   _createClass(EForm, [{
     key: "render",
-    value: function render() {}
+    value: function render() {
+      var _this = this;
+
+      var form = this; // .replacedWith(document.createElement('form'))
+
+      var inputs = form.getElementsByTagName('input');
+      var fieldsets = form.getElementsByTagName('fieldset'); // const selects = form.getElementsByTagName('select')
+      // const textareas = form.getElementsByTagName('textarea')
+      // const localStorageValues = form.getElementsByTagName('e-local-storage-value')
+      // const memoryStorageValues = form.getElementsByTagName('e-memory-storage-value')
+
+      var requestButton = document.getElementById(form.getAttribute('data-request-button').split('#')[1]);
+      requestButton.addEventListener('click', function () {
+        var requestBody = {};
+
+        _this.retrievedValuesFromElmsForRequestBody(fieldsets, requestBody);
+
+        _this.retrievedValuesFromElmsForRequestBody(inputs, requestBody);
+      });
+    }
+  }, {
+    key: "retrievedValuesFromElmsForRequestBody",
+    value: function retrievedValuesFromElmsForRequestBody(elms, requestBody) {
+      console.log(requestBody);
+      Object.keys(elms).forEach(function (index) {
+        console.log(elms[index].value);
+      });
+    }
   }], [{
     key: "observedAttributes",
     get: function get() {
-      return ['data-request-url', 'data-request-button'];
+      return ['data-request-url', 'data-request-headers', 'data-request-button'];
     }
   }]);
 
@@ -7609,7 +7636,7 @@ function (_HTMLTunedElement) {
         instance.initGoogleOauth(googleOauthButtonElm);
       };
 
-      this.replaceWith(googleOauthButtonElm);
+      this.replacedWith(googleOauthButtonElm);
       this.rendered = true;
     }
   }, {
@@ -7709,10 +7736,6 @@ var _require3 = require('@page-libs/dom'),
     UnwrappedChildrenOfParent = _require3.UnwrappedChildrenOfParent,
     ElementWithInnerHTML = _require3.ElementWithInnerHTML;
 
-var AttributeWithAppliedLocalStorageVariables = require('./../async/AttributeWithAppliedLocalStorageVariables');
-
-var AttributeWithAppliedMemoryStorageVariables = require('./../async/AttributeWithAppliedMemoryStorageVariables');
-
 var HTMLTunedElement = require('./../objects/HTMLTunedElement');
 
 var EHTML =
@@ -7729,7 +7752,7 @@ function (_HTMLTunedElement) {
   _createClass(EHTML, [{
     key: "render",
     value: function render() {
-      new UnwrappedChildrenOfParent(new ElementWithInnerHTML(this, new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', 'GET', 'headers', new ParsedJSON(new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))))))).call();
+      new UnwrappedChildrenOfParent(new ElementWithInnerHTML(this, new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', 'GET', 'headers', new ParsedJSON(this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))))))).call();
     }
   }], [{
     key: "observedAttributes",
@@ -7743,7 +7766,7 @@ function (_HTMLTunedElement) {
 
 module.exports = EHTML;
 
-},{"./../async/AttributeWithAppliedLocalStorageVariables":150,"./../async/AttributeWithAppliedMemoryStorageVariables":151,"./../objects/HTMLTunedElement":170,"@cuties/json":80,"@cuties/object":85,"@page-libs/ajax":120,"@page-libs/cutie":131,"@page-libs/dom":141}],167:[function(require,module,exports){
+},{"./../objects/HTMLTunedElement":170,"@cuties/json":80,"@cuties/object":85,"@page-libs/ajax":120,"@page-libs/cutie":131,"@page-libs/dom":141}],167:[function(require,module,exports){
 'use strict';
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -7785,10 +7808,6 @@ var _require2 = require('@page-libs/ajax'),
 var _require3 = require('@page-libs/dom'),
     UnwrappedChildrenOfParent = _require3.UnwrappedChildrenOfParent;
 
-var AttributeWithAppliedLocalStorageVariables = require('./../async/AttributeWithAppliedLocalStorageVariables');
-
-var AttributeWithAppliedMemoryStorageVariables = require('./../async/AttributeWithAppliedMemoryStorageVariables');
-
 var ElementWithAppliedDataTextAndValueAttributesForChildNodes = require('./../async/ElementWithAppliedDataTextAndValueAttributesForChildNodes');
 
 var HTMLTunedElement = require('./../objects/HTMLTunedElement');
@@ -7811,7 +7830,7 @@ function (_HTMLTunedElement) {
   _createClass(EJSON, [{
     key: "render",
     value: function render() {
-      new ParsedJSON(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', this.getAttribute('data-method') || 'GET', 'headers', new ParsedJSON(new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))), new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-request-body'))))))).as('RESPONSE').after(new TheSameObjectWithValue(this.cache, this.getAttribute('data-object'), as('RESPONSE')).after(new UnwrappedChildrenOfParent(new ElementWithAppliedDataTextAndValueAttributesForChildNodes(this, this.cache)))).call();
+      new ParsedJSON(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', this.getAttribute('data-method') || 'GET', 'headers', new ParsedJSON(this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))), this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-request-body'))))))).as('RESPONSE').after(new TheSameObjectWithValue(this.cache, this.getAttribute('data-object'), as('RESPONSE')).after(new UnwrappedChildrenOfParent(new ElementWithAppliedDataTextAndValueAttributesForChildNodes(this, this.cache)))).call();
     }
   }], [{
     key: "observedAttributes",
@@ -7825,7 +7844,7 @@ function (_HTMLTunedElement) {
 
 module.exports = EJSON;
 
-},{"./../async/AttributeWithAppliedLocalStorageVariables":150,"./../async/AttributeWithAppliedMemoryStorageVariables":151,"./../async/ElementWithAppliedDataTextAndValueAttributesForChildNodes":152,"./../objects/HTMLTunedElement":170,"@cuties/buffer":1,"@cuties/json":80,"@cuties/object":85,"@page-libs/ajax":120,"@page-libs/cutie":131,"@page-libs/dom":141}],168:[function(require,module,exports){
+},{"./../async/ElementWithAppliedDataTextAndValueAttributesForChildNodes":152,"./../objects/HTMLTunedElement":170,"@cuties/buffer":1,"@cuties/json":80,"@cuties/object":85,"@page-libs/ajax":120,"@page-libs/cutie":131,"@page-libs/dom":141}],168:[function(require,module,exports){
 'use strict';
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -7979,8 +7998,8 @@ function (_HTMLElement) {
   }
 
   _createClass(HTMLTunedElement, [{
-    key: "replaceWith",
-    value: function replaceWith(elm) {
+    key: "replacedWith",
+    value: function replacedWith(elm) {
       var instance = this;
       instance.getAttributeNames().forEach(function (name) {
         elm.setAttribute(name, instance.getAttribute(name));
@@ -7992,6 +8011,24 @@ function (_HTMLElement) {
       }
 
       instance.parentNode.replaceChild(elm, instance);
+      return elm;
+    }
+  }, {
+    key: "attributeWithAppliedLocalStorageVariables",
+    value: function attributeWithAppliedLocalStorageVariables(attribute) {
+      attribute = attribute || '';
+      return attribute.replace(/\$\{localStorage\.(.+)\}/g, function (match, p1, offset, string) {
+        return localStorage.getItem(p1);
+      });
+    }
+  }, {
+    key: "attributeWithAppliedMemoryStorageVariables",
+    value: function attributeWithAppliedMemoryStorageVariables(attribute) {
+      attribute = attribute || '';
+      return attribute.replace(/\$\{memoryStorage\.(.+)\}/g, function (match, p1, offset, string) {
+        // eslint-disable-next-line no-undef
+        return memoryStorage.getItem(p1);
+      });
     }
   }, {
     key: "connectedCallback",

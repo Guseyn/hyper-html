@@ -26,7 +26,7 @@ class EGoogleOauthButton extends HTMLTunedElement {
     googleApiScriptElm.onload = () => {
       instance.initGoogleOauth(googleOauthButtonElm)
     }
-    this.replaceWith(googleOauthButtonElm)
+    this.replacedWith(googleOauthButtonElm)
     this.rendered = true
   }
 

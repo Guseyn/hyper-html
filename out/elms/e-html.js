@@ -35,10 +35,6 @@ var _require3 = require('@page-libs/dom'),
     UnwrappedChildrenOfParent = _require3.UnwrappedChildrenOfParent,
     ElementWithInnerHTML = _require3.ElementWithInnerHTML;
 
-var AttributeWithAppliedLocalStorageVariables = require('./../async/AttributeWithAppliedLocalStorageVariables');
-
-var AttributeWithAppliedMemoryStorageVariables = require('./../async/AttributeWithAppliedMemoryStorageVariables');
-
 var HTMLTunedElement = require('./../objects/HTMLTunedElement');
 
 var EHTML =
@@ -55,7 +51,7 @@ function (_HTMLTunedElement) {
   _createClass(EHTML, [{
     key: "render",
     value: function render() {
-      new UnwrappedChildrenOfParent(new ElementWithInnerHTML(this, new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', 'GET', 'headers', new ParsedJSON(new AttributeWithAppliedLocalStorageVariables(new AttributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))))))).call();
+      new UnwrappedChildrenOfParent(new ElementWithInnerHTML(this, new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-src'))), 'method', 'GET', 'headers', new ParsedJSON(this.attributeWithAppliedLocalStorageVariables(this.attributeWithAppliedMemoryStorageVariables(this.getAttribute('data-headers') || '{}')))))))).call();
     }
   }], [{
     key: "observedAttributes",

@@ -33,11 +33,38 @@ function (_HTMLTunedElement) {
 
   _createClass(EForm, [{
     key: "render",
-    value: function render() {}
+    value: function render() {
+      var _this = this;
+
+      var form = this; // .replacedWith(document.createElement('form'))
+
+      var inputs = form.getElementsByTagName('input');
+      var fieldsets = form.getElementsByTagName('fieldset'); // const selects = form.getElementsByTagName('select')
+      // const textareas = form.getElementsByTagName('textarea')
+      // const localStorageValues = form.getElementsByTagName('e-local-storage-value')
+      // const memoryStorageValues = form.getElementsByTagName('e-memory-storage-value')
+
+      var requestButton = document.getElementById(form.getAttribute('data-request-button').split('#')[1]);
+      requestButton.addEventListener('click', function () {
+        var requestBody = {};
+
+        _this.retrievedValuesFromElmsForRequestBody(fieldsets, requestBody);
+
+        _this.retrievedValuesFromElmsForRequestBody(inputs, requestBody);
+      });
+    }
+  }, {
+    key: "retrievedValuesFromElmsForRequestBody",
+    value: function retrievedValuesFromElmsForRequestBody(elms, requestBody) {
+      console.log(requestBody);
+      Object.keys(elms).forEach(function (index) {
+        console.log(elms[index].value);
+      });
+    }
   }], [{
     key: "observedAttributes",
     get: function get() {
-      return ['data-request-url', 'data-request-button'];
+      return ['data-request-url', 'data-request-headers', 'data-request-button'];
     }
   }]);
 

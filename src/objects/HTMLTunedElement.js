@@ -6,7 +6,7 @@ class HTMLTunedElement extends HTMLElement {
     this.rendered = false
   }
 
-  replaceWith (elm) {
+  replacedWith (elm) {
     const instance = this
     instance.getAttributeNames().forEach(name => {
       elm.setAttribute(name, instance.getAttribute(name))
@@ -16,6 +16,22 @@ class HTMLTunedElement extends HTMLElement {
       elm.appendChild(child)
     }
     instance.parentNode.replaceChild(elm, instance)
+    return elm
+  }
+
+  attributeWithAppliedLocalStorageVariables (attribute) {
+    attribute = attribute || ''
+    return attribute.replace(/\$\{localStorage\.(.+)\}/g, (match, p1, offset, string) => {
+      return localStorage.getItem(p1)
+    })
+  }
+
+  attributeWithAppliedMemoryStorageVariables (attribute) {
+    attribute = attribute || ''
+    return attribute.replace(/\$\{memoryStorage\.(.+)\}/g, (match, p1, offset, string) => {
+      // eslint-disable-next-line no-undef
+      return memoryStorage.getItem(p1)
+    })
   }
 
   connectedCallback () {

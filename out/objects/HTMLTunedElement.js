@@ -42,8 +42,8 @@ function (_HTMLElement) {
   }
 
   _createClass(HTMLTunedElement, [{
-    key: "replaceWith",
-    value: function replaceWith(elm) {
+    key: "replacedWith",
+    value: function replacedWith(elm) {
       var instance = this;
       instance.getAttributeNames().forEach(function (name) {
         elm.setAttribute(name, instance.getAttribute(name));
@@ -55,6 +55,24 @@ function (_HTMLElement) {
       }
 
       instance.parentNode.replaceChild(elm, instance);
+      return elm;
+    }
+  }, {
+    key: "attributeWithAppliedLocalStorageVariables",
+    value: function attributeWithAppliedLocalStorageVariables(attribute) {
+      attribute = attribute || '';
+      return attribute.replace(/\$\{localStorage\.(.+)\}/g, function (match, p1, offset, string) {
+        return localStorage.getItem(p1);
+      });
+    }
+  }, {
+    key: "attributeWithAppliedMemoryStorageVariables",
+    value: function attributeWithAppliedMemoryStorageVariables(attribute) {
+      attribute = attribute || '';
+      return attribute.replace(/\$\{memoryStorage\.(.+)\}/g, function (match, p1, offset, string) {
+        // eslint-disable-next-line no-undef
+        return memoryStorage.getItem(p1);
+      });
     }
   }, {
     key: "connectedCallback",
