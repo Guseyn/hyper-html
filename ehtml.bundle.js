@@ -6561,11 +6561,11 @@ var _require = require('@cuties/object'),
 
 var Actions = require('./../util/Actions');
 
-var AppliedActionsOnResponse = function AppliedActionsOnResponse(tagName, objName, actions, supportedActions, obj) {
+var AppliedActionsOnResponse = function AppliedActionsOnResponse(tagName, objName, actions, obj) {
   _classCallCheck(this, AppliedActionsOnResponse);
 
   var OBJ = {};
-  return new TheSameObjectWithValue(OBJ, objName, obj).after(new Actions(tagName, actions, supportedActions).asAsyncTree(OBJ));
+  return new TheSameObjectWithValue(OBJ, objName, obj).after(new Actions(tagName, actions).asAsyncTree(OBJ));
 };
 
 module.exports = AppliedActionsOnResponse;
@@ -7575,47 +7575,62 @@ function (_E) {
   }
 
   _createClass(EForm, [{
-    key: "supportedActions",
-    value: function supportedActions() {
-      return ['redirect', 'saveToLocalStorage', 'saveToSessionStorage', 'innerHTML', 'addHTMLTo', 'mapObjToElm', 'hideElms', 'showElms', 'disableElms', 'enableElms', 'changeElmsClassName'];
-    }
-  }, {
     key: "onRender",
     value: function onRender() {
+      this.inputs = this.getElementsByTagName('input');
+      this.selects = this.getElementsByTagName('select');
+      this.textareas = this.getElementsByTagName('textarea');
+      this.localStorageValues = this.getElementsByTagName('e-local-storage-value');
+      this.sessionStorageValues = this.getElementsByTagName('e-session-storage-value');
+      this.buttons = this.getElementsByTagName('button');
+      this.progressBars = this.getElementsByTagName('progress');
+      this.tuneFileInputs(this.filteredFileInputs(this.inputs));
+      this.propagateFormSendEvent(this.inputs);
+      this.propagateFormSendEvent(this.selects);
+      this.propagateFormSendEvent(this.textareas);
+      this.propagateFormSendEvent(this.localStorageValues);
+      this.propagateFormSendEvent(this.sessionStorageValues);
+      this.propagateFormSendEvent(this.buttons);
+      this.prepareProgressBars(this.progressBars);
+    }
+  }, {
+    key: "propagateFormSendEvent",
+    value: function propagateFormSendEvent(elms) {
       var _this = this;
 
-      var requestButton = new ParsedElmSelectors(this.getAttribute('data-request-button')).value()[0];
-      var uploadProgressBar = new ParsedElmSelectors(this.getAttribute('data-upload-progress-bar')).value()[0];
-      var progressBar = new ParsedElmSelectors(this.getAttribute('data-progress-bar')).value()[0];
-      this.tuneFileInputs(this.filteredFileInputs(this.getElementsByTagName('input')), requestButton);
+      var _loop = function _loop(index) {
+        var elm = elms[index];
+        var eventName = elm.getAttribute('data-send-form-on');
 
-      if (requestButton) {
-        requestButton.addEventListener('click', function () {
-          requestButton.disabled = true;
+        if (eventName) {
+          elm.addEventListener(eventName, function () {
+            _this.submit(elm);
+          });
+        }
+      };
 
-          var requestBody = _this.requestBody();
-
-          new ParsedJSON(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', _this.getAttribute('data-request-url'), 'headers', new ParsedJSON(_this.getAttribute('data-request-headers') || '{}'), 'method', _this.getAttribute('data-request-method') || 'POST', 'uploadProgressEvent', _this.showProgress(uploadProgressBar), 'progressEvent', _this.showProgress(progressBar)), new StringifiedJSON(requestBody)))).as('RESPONSE').after(new EnabledElements([requestButton]).after(new AppliedActionsOnResponse(_this.tagName, _this.getAttribute('data-response-object-name'), _this.getAttribute('data-actions-on-response'), _this.supportedActions(), as('RESPONSE')))).call();
-        });
+      for (var index = 0; index < elms.length; index++) {
+        _loop(index);
       }
-
-      this.prepareProgressBar(uploadProgressBar);
-      this.prepareProgressBar(progressBar);
+    }
+  }, {
+    key: "submit",
+    value: function submit(target) {
+      var uploadProgressBar = new ParsedElmSelectors(target.getAttribute('data-upload-progress-bar')).value()[0];
+      var progressBar = new ParsedElmSelectors(target.getAttribute('data-progress-bar')).value()[0];
+      target.disabled = true;
+      var requestBody = this.requestBody();
+      new ParsedJSON(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', target.getAttribute('data-request-url'), 'headers', new ParsedJSON(target.getAttribute('data-request-headers') || '{}'), 'method', target.getAttribute('data-request-method') || 'POST', 'uploadProgressEvent', this.showProgress(uploadProgressBar), 'progressEvent', this.showProgress(progressBar)), new StringifiedJSON(requestBody)))).as('RESPONSE').after(new EnabledElements([target]).after(new AppliedActionsOnResponse(target.tagName, target.getAttribute('data-response-object-name'), target.getAttribute('data-actions-on-response'), as('RESPONSE')))).call();
     }
   }, {
     key: "requestBody",
     value: function requestBody() {
-      var inputs = this.getElementsByTagName('input');
-      var selects = this.getElementsByTagName('select');
-      var textareas = this.getElementsByTagName('textarea');
-      var localStorageValues = this.getElementsByTagName('e-local-storage-value');
-      var sessionStorageValues = this.getElementsByTagName('e-session-storage-value');
       var requestBody = {};
-      this.retrievedValuesFromInputsForRequestBody(inputs, requestBody);
-      this.retrievedValuesFromSelectsForRequestBody(selects, requestBody);
-      this.retrievedValuesFromTextareasForRequestBody(textareas, requestBody);
-      this.retrievedValuesFromLocalStorageForRequestBody(localStorageValues, requestBody);
-      this.retrievedValuesFromSessionStorageForRequestBody(sessionStorageValues, requestBody);
+      this.retrievedValuesFromInputsForRequestBody(this.inputs, requestBody);
+      this.retrievedValuesFromSelectsForRequestBody(this.selects, requestBody);
+      this.retrievedValuesFromTextareasForRequestBody(this.textareas, requestBody);
+      this.retrievedValuesFromLocalStorageForRequestBody(this.localStorageValues, requestBody);
+      this.retrievedValuesFromSessionStorageForRequestBody(this.sessionStorageValues, requestBody);
       return requestBody;
     }
   }, {
@@ -7695,56 +7710,39 @@ function (_E) {
     }
   }, {
     key: "tuneFileInputs",
-    value: function tuneFileInputs(fileInputs, requestButton) {
+    value: function tuneFileInputs(fileInputs) {
       for (var index = 0; index < fileInputs.length; index++) {
-        this.tuneFileInput(fileInputs[index], requestButton);
+        this.tuneFileInput(fileInputs[index]);
       }
     }
   }, {
     key: "tuneFileInput",
-    value: function tuneFileInput(fileInput, requestButton) {
+    value: function tuneFileInput(fileInput) {
       var _this2 = this;
 
       var readProgressBar = new ParsedElmSelectors(fileInput.getAttribute('data-read-progress-bar')).value()[0];
-      this.prepareProgressBar(readProgressBar);
       fileInput.addEventListener('change', function () {
-        _this2.readFilesContentForRequestBody(fileInput, requestButton, readProgressBar);
+        _this2.readFilesContentForRequestBody(fileInput, readProgressBar);
       });
     }
   }, {
     key: "readFilesContentForRequestBody",
-    value: function readFilesContentForRequestBody(fileInput, requestButton, readProgressBar) {
+    value: function readFilesContentForRequestBody(fileInput, readProgressBar) {
       fileInput.filesInfo = [];
 
       for (var index = 0; index < fileInput.files.length; index++) {
-        this.readFileContentForRequestBody(fileInput, requestButton, readProgressBar, index);
+        this.readFileContentForRequestBody(fileInput, readProgressBar, index);
       }
     }
   }, {
     key: "readFileContentForRequestBody",
-    value: function readFileContentForRequestBody(fileInput, requestButton, readProgressBar, index) {
+    value: function readFileContentForRequestBody(fileInput, readProgressBar, index) {
       var file = fileInput.files[index];
       var reader = new FileReader();
       reader.readAsDataURL(file);
 
-      reader.onloadstart = function () {
-        if (requestButton) {
-          requestButton.setAttribute('disabled', true);
-        }
-      };
-
       reader.onload = function () {
         fileInput.filesInfo[index] = new FileInfo(file.name, file.size, file.type, reader.result, file.lastModifiedDate);
-
-        if (requestButton) {
-          requestButton.removeAttribute('disabled');
-        }
-      };
-
-      reader.onabort = function () {
-        if (requestButton) {
-          requestButton.removeAttribute('disabled');
-        }
       };
 
       reader.onprogress = this.showProgress(readProgressBar);
@@ -7771,9 +7769,10 @@ function (_E) {
       return fileInputs;
     }
   }, {
-    key: "prepareProgressBar",
-    value: function prepareProgressBar(progressBar) {
-      if (progressBar) {
+    key: "prepareProgressBars",
+    value: function prepareProgressBars(progressBars) {
+      for (var index = 0; index < progressBars.length; index++) {
+        var progressBar = progressBars[index];
         progressBar.max = 100;
         progressBar.value = 0;
         progressBar.style.display = 'none';
@@ -7808,7 +7807,7 @@ function (_E) {
   }], [{
     key: "observedAttributes",
     get: function get() {
-      return ['data-request-url', 'data-request-method', 'data-request-headers', 'data-request-button', 'data-upload-progress-bar', 'data-progress-bar', 'data-response-object-name', 'data-actions-on-response'];
+      return [];
     }
   }]);
 
@@ -8285,7 +8284,8 @@ var actions = {
     return new LocalStorageWithSetValue(localStorage, key, value);
   },
   saveToSessionStorage: function saveToSessionStorage(key, value) {
-    return new SessionStorageWithSetValue(sessionStorage, key, value);
+    // eslint-disable-next-line no-undef
+    return new SessionStorageWithSetValue(sessionStorageWrapper, key, value);
   },
   hideElms: function hideElms() {
     for (var _len = arguments.length, elmSelectors = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -8380,18 +8380,17 @@ var BuiltAsyncTreeByParsedActions = require('./BuiltAsyncTreeByParsedActions');
 var Actions =
 /*#__PURE__*/
 function () {
-  function Actions(tagName, actions, supportedActions) {
+  function Actions(tagName, actions) {
     _classCallCheck(this, Actions);
 
     this.tagName = tagName;
     this.actions = actions;
-    this.supportedActions = supportedActions;
   }
 
   _createClass(Actions, [{
     key: "asAsyncTree",
     value: function asAsyncTree(obj) {
-      return new BuiltAsyncTreeByParsedActions(new ParsedActions(this.actions, this.supportedActions, this.tagName, obj).value()).value();
+      return new BuiltAsyncTreeByParsedActions(new ParsedActions(this.actions, this.tagName, obj).value()).value();
     }
   }]);
 
@@ -8504,12 +8503,11 @@ var ActionByNameWithParams = require('./ActionByNameWithParams');
 var ParsedActions =
 /*#__PURE__*/
 function () {
-  function ParsedActions(actions, supportedActions, tagName, obj) {
+  function ParsedActions(actions, tagName, obj) {
     _classCallCheck(this, ParsedActions);
 
     // act1(p1, p2); act(q1, q2); ...
     this.actions = actions;
-    this.supportedActions = supportedActions;
     this.tagName = tagName;
     this.obj = obj;
   }
@@ -8532,10 +8530,6 @@ function () {
       });
       splitedActions.forEach(function (action) {
         var actionName = action.split('(')[0].trim();
-
-        if (_this.supportedActions.indexOf(actionName) === -1) {
-          throw new Error("action ".concat(actionName, " is not supported for the element ").concat(_this.tagName));
-        }
 
         var actionParams = _this.actionParams(action, actionName);
 
@@ -8665,7 +8659,7 @@ function () {
     key: "setItem",
     value: function setItem(key, value) {
       if (value instanceof Object) {
-        sessionStorage.setItem(JSON.stringify(value));
+        sessionStorage.setItem(key, JSON.stringify(value));
       } else {
         sessionStorage.setItem(value);
       }

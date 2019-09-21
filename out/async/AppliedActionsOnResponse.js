@@ -7,11 +7,11 @@ var _require = require('@cuties/object'),
 
 var Actions = require('./../util/Actions');
 
-var AppliedActionsOnResponse = function AppliedActionsOnResponse(tagName, objName, actions, supportedActions, obj) {
+var AppliedActionsOnResponse = function AppliedActionsOnResponse(tagName, objName, actions, obj) {
   _classCallCheck(this, AppliedActionsOnResponse);
 
   var OBJ = {};
-  return new TheSameObjectWithValue(OBJ, objName, obj).after(new Actions(tagName, actions, supportedActions).asAsyncTree(OBJ));
+  return new TheSameObjectWithValue(OBJ, objName, obj).after(new Actions(tagName, actions).asAsyncTree(OBJ));
 };
 
 module.exports = AppliedActionsOnResponse;

@@ -4,13 +4,12 @@ const { TheSameObjectWithValue } = require('@cuties/object')
 const Actions = require('./../util/Actions')
 
 class AppliedActionsOnResponse {
-  constructor (tagName, objName, actions, supportedActions, obj) {
+  constructor (tagName, objName, actions, obj) {
     const OBJ = {}
     return new TheSameObjectWithValue(OBJ, objName, obj).after(
       new Actions(
         tagName,
-        actions,
-        supportedActions
+        actions
       ).asAsyncTree(OBJ)
     )
   }

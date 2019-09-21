@@ -7,10 +7,9 @@ const ParsedJSONOrString = require('./../async/ParsedJSONOrString')
 const ActionByNameWithParams = require('./ActionByNameWithParams')
 
 class ParsedActions {
-  constructor (actions, supportedActions, tagName, obj) {
+  constructor (actions, tagName, obj) {
     // act1(p1, p2); act(q1, q2); ...
     this.actions = actions
-    this.supportedActions = supportedActions
     this.tagName = tagName
     this.obj = obj
   }
@@ -26,9 +25,6 @@ class ParsedActions {
       .filter(action => action.length !== 0)
     splitedActions.forEach(action => {
       const actionName = action.split('(')[0].trim()
-      if (this.supportedActions.indexOf(actionName) === -1) {
-        throw new Error(`action ${actionName} is not supported for the element ${this.tagName}`)
-      }
       const actionParams = this.actionParams(action, actionName)
       parsedActions.push(
         new ActionByNameWithParams(

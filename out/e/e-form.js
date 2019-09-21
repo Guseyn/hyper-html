@@ -55,47 +55,62 @@ function (_E) {
   }
 
   _createClass(EForm, [{
-    key: "supportedActions",
-    value: function supportedActions() {
-      return ['redirect', 'saveToLocalStorage', 'saveToSessionStorage', 'innerHTML', 'addHTMLTo', 'mapObjToElm', 'hideElms', 'showElms', 'disableElms', 'enableElms', 'changeElmsClassName'];
-    }
-  }, {
     key: "onRender",
     value: function onRender() {
+      this.inputs = this.getElementsByTagName('input');
+      this.selects = this.getElementsByTagName('select');
+      this.textareas = this.getElementsByTagName('textarea');
+      this.localStorageValues = this.getElementsByTagName('e-local-storage-value');
+      this.sessionStorageValues = this.getElementsByTagName('e-session-storage-value');
+      this.buttons = this.getElementsByTagName('button');
+      this.progressBars = this.getElementsByTagName('progress');
+      this.tuneFileInputs(this.filteredFileInputs(this.inputs));
+      this.propagateFormSendEvent(this.inputs);
+      this.propagateFormSendEvent(this.selects);
+      this.propagateFormSendEvent(this.textareas);
+      this.propagateFormSendEvent(this.localStorageValues);
+      this.propagateFormSendEvent(this.sessionStorageValues);
+      this.propagateFormSendEvent(this.buttons);
+      this.prepareProgressBars(this.progressBars);
+    }
+  }, {
+    key: "propagateFormSendEvent",
+    value: function propagateFormSendEvent(elms) {
       var _this = this;
 
-      var requestButton = new ParsedElmSelectors(this.getAttribute('data-request-button')).value()[0];
-      var uploadProgressBar = new ParsedElmSelectors(this.getAttribute('data-upload-progress-bar')).value()[0];
-      var progressBar = new ParsedElmSelectors(this.getAttribute('data-progress-bar')).value()[0];
-      this.tuneFileInputs(this.filteredFileInputs(this.getElementsByTagName('input')), requestButton);
+      var _loop = function _loop(index) {
+        var elm = elms[index];
+        var eventName = elm.getAttribute('data-send-form-on');
 
-      if (requestButton) {
-        requestButton.addEventListener('click', function () {
-          requestButton.disabled = true;
+        if (eventName) {
+          elm.addEventListener(eventName, function () {
+            _this.submit(elm);
+          });
+        }
+      };
 
-          var requestBody = _this.requestBody();
-
-          new ParsedJSON(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', _this.getAttribute('data-request-url'), 'headers', new ParsedJSON(_this.getAttribute('data-request-headers') || '{}'), 'method', _this.getAttribute('data-request-method') || 'POST', 'uploadProgressEvent', _this.showProgress(uploadProgressBar), 'progressEvent', _this.showProgress(progressBar)), new StringifiedJSON(requestBody)))).as('RESPONSE').after(new EnabledElements([requestButton]).after(new AppliedActionsOnResponse(_this.tagName, _this.getAttribute('data-response-object-name'), _this.getAttribute('data-actions-on-response'), _this.supportedActions(), as('RESPONSE')))).call();
-        });
+      for (var index = 0; index < elms.length; index++) {
+        _loop(index);
       }
-
-      this.prepareProgressBar(uploadProgressBar);
-      this.prepareProgressBar(progressBar);
+    }
+  }, {
+    key: "submit",
+    value: function submit(target) {
+      var uploadProgressBar = new ParsedElmSelectors(target.getAttribute('data-upload-progress-bar')).value()[0];
+      var progressBar = new ParsedElmSelectors(target.getAttribute('data-progress-bar')).value()[0];
+      target.disabled = true;
+      var requestBody = this.requestBody();
+      new ParsedJSON(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', target.getAttribute('data-request-url'), 'headers', new ParsedJSON(target.getAttribute('data-request-headers') || '{}'), 'method', target.getAttribute('data-request-method') || 'POST', 'uploadProgressEvent', this.showProgress(uploadProgressBar), 'progressEvent', this.showProgress(progressBar)), new StringifiedJSON(requestBody)))).as('RESPONSE').after(new EnabledElements([target]).after(new AppliedActionsOnResponse(target.tagName, target.getAttribute('data-response-object-name'), target.getAttribute('data-actions-on-response'), as('RESPONSE')))).call();
     }
   }, {
     key: "requestBody",
     value: function requestBody() {
-      var inputs = this.getElementsByTagName('input');
-      var selects = this.getElementsByTagName('select');
-      var textareas = this.getElementsByTagName('textarea');
-      var localStorageValues = this.getElementsByTagName('e-local-storage-value');
-      var sessionStorageValues = this.getElementsByTagName('e-session-storage-value');
       var requestBody = {};
-      this.retrievedValuesFromInputsForRequestBody(inputs, requestBody);
-      this.retrievedValuesFromSelectsForRequestBody(selects, requestBody);
-      this.retrievedValuesFromTextareasForRequestBody(textareas, requestBody);
-      this.retrievedValuesFromLocalStorageForRequestBody(localStorageValues, requestBody);
-      this.retrievedValuesFromSessionStorageForRequestBody(sessionStorageValues, requestBody);
+      this.retrievedValuesFromInputsForRequestBody(this.inputs, requestBody);
+      this.retrievedValuesFromSelectsForRequestBody(this.selects, requestBody);
+      this.retrievedValuesFromTextareasForRequestBody(this.textareas, requestBody);
+      this.retrievedValuesFromLocalStorageForRequestBody(this.localStorageValues, requestBody);
+      this.retrievedValuesFromSessionStorageForRequestBody(this.sessionStorageValues, requestBody);
       return requestBody;
     }
   }, {
@@ -175,56 +190,39 @@ function (_E) {
     }
   }, {
     key: "tuneFileInputs",
-    value: function tuneFileInputs(fileInputs, requestButton) {
+    value: function tuneFileInputs(fileInputs) {
       for (var index = 0; index < fileInputs.length; index++) {
-        this.tuneFileInput(fileInputs[index], requestButton);
+        this.tuneFileInput(fileInputs[index]);
       }
     }
   }, {
     key: "tuneFileInput",
-    value: function tuneFileInput(fileInput, requestButton) {
+    value: function tuneFileInput(fileInput) {
       var _this2 = this;
 
       var readProgressBar = new ParsedElmSelectors(fileInput.getAttribute('data-read-progress-bar')).value()[0];
-      this.prepareProgressBar(readProgressBar);
       fileInput.addEventListener('change', function () {
-        _this2.readFilesContentForRequestBody(fileInput, requestButton, readProgressBar);
+        _this2.readFilesContentForRequestBody(fileInput, readProgressBar);
       });
     }
   }, {
     key: "readFilesContentForRequestBody",
-    value: function readFilesContentForRequestBody(fileInput, requestButton, readProgressBar) {
+    value: function readFilesContentForRequestBody(fileInput, readProgressBar) {
       fileInput.filesInfo = [];
 
       for (var index = 0; index < fileInput.files.length; index++) {
-        this.readFileContentForRequestBody(fileInput, requestButton, readProgressBar, index);
+        this.readFileContentForRequestBody(fileInput, readProgressBar, index);
       }
     }
   }, {
     key: "readFileContentForRequestBody",
-    value: function readFileContentForRequestBody(fileInput, requestButton, readProgressBar, index) {
+    value: function readFileContentForRequestBody(fileInput, readProgressBar, index) {
       var file = fileInput.files[index];
       var reader = new FileReader();
       reader.readAsDataURL(file);
 
-      reader.onloadstart = function () {
-        if (requestButton) {
-          requestButton.setAttribute('disabled', true);
-        }
-      };
-
       reader.onload = function () {
         fileInput.filesInfo[index] = new FileInfo(file.name, file.size, file.type, reader.result, file.lastModifiedDate);
-
-        if (requestButton) {
-          requestButton.removeAttribute('disabled');
-        }
-      };
-
-      reader.onabort = function () {
-        if (requestButton) {
-          requestButton.removeAttribute('disabled');
-        }
       };
 
       reader.onprogress = this.showProgress(readProgressBar);
@@ -251,9 +249,10 @@ function (_E) {
       return fileInputs;
     }
   }, {
-    key: "prepareProgressBar",
-    value: function prepareProgressBar(progressBar) {
-      if (progressBar) {
+    key: "prepareProgressBars",
+    value: function prepareProgressBars(progressBars) {
+      for (var index = 0; index < progressBars.length; index++) {
+        var progressBar = progressBars[index];
         progressBar.max = 100;
         progressBar.value = 0;
         progressBar.style.display = 'none';
@@ -288,7 +287,7 @@ function (_E) {
   }], [{
     key: "observedAttributes",
     get: function get() {
-      return ['data-request-url', 'data-request-method', 'data-request-headers', 'data-request-button', 'data-upload-progress-bar', 'data-progress-bar', 'data-response-object-name', 'data-actions-on-response'];
+      return [];
     }
   }]);
 

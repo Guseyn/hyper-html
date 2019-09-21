@@ -13,18 +13,17 @@ var BuiltAsyncTreeByParsedActions = require('./BuiltAsyncTreeByParsedActions');
 var Actions =
 /*#__PURE__*/
 function () {
-  function Actions(tagName, actions, supportedActions) {
+  function Actions(tagName, actions) {
     _classCallCheck(this, Actions);
 
     this.tagName = tagName;
     this.actions = actions;
-    this.supportedActions = supportedActions;
   }
 
   _createClass(Actions, [{
     key: "asAsyncTree",
     value: function asAsyncTree(obj) {
-      return new BuiltAsyncTreeByParsedActions(new ParsedActions(this.actions, this.supportedActions, this.tagName, obj).value()).value();
+      return new BuiltAsyncTreeByParsedActions(new ParsedActions(this.actions, this.tagName, obj).value()).value();
     }
   }]);
 

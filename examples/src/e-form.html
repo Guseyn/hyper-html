@@ -32,21 +32,6 @@
   <body class="main">
     <e-form 
       id="form"
-      data-request-url="https://guseyn.com/echo"
-      data-request-button="#send"
-      data-upload-progress-bar="#uploadProgressBar"
-      data-progress-bar="#progressBar"
-      data-response-object-name="saved"
-      data-actions-on-response="
-        saveToSessionStorage('saved', '${saved}');
-        hideElms('#form');
-        innerHTML('#result', '/../html/form-result.html');
-        mapObjToElm('#form-result', '${saved}');
-        addHTMLTo('#result-with-only-files', '/../html/form-result-only-files.html');
-        mapObjToElm('#form-result-only-files', '${saved}');
-        showElms('#result', '#result-with-only-files');
-        disableElms('#send');
-      "
     >
       <input type="checkbox" name="isTrue"><br/>
       <input type="color" name="colorhash"><br/>
@@ -91,9 +76,31 @@
       <textarea id="text" name="bigText" rows="5" cols="33">Big text...</textarea><br/>
 
       <e-local-storage-value name="localValue" data-key="localValue"></e-local-storage-value>
-      <e-memory-storage-value name="memoryValue" data-key="memoryValue"></e-memory-storage-value>
+      <e-session-storage-value name="sessionValue" data-key="sessionValue"></e-session-storage-value>
 
-      <input type="submit" name="main" value="Send request" id="send"/>
+      <input
+        type="submit"
+        name="main"
+        value="Send request"
+        id="send"
+        data-send-form-on="click"
+        data-request-url="https://guseyn.com/echo"
+        data-request-method="POST"
+        data-request-headers="{}"
+        data-upload-progress-bar="#uploadProgressBar"
+        data-progress-bar="#progressBar"
+        data-response-object-name="saved"
+        data-actions-on-response="
+          saveToSessionStorage('saved', '${saved}');
+          hideElms('#form');
+          innerHTML('#result', '/../html/form-result.html');
+          mapObjToElm('#form-result', '${saved}');
+          addHTMLTo('#result-with-only-files', '/../html/form-result-only-files.html');
+          mapObjToElm('#form-result-only-files', '${saved}');
+          showElms('#result', '#result-with-only-files');
+          disableElms('#send');
+        "
+      />
 
       <br/>
       <progress id="uploadProgressBar"></progress>

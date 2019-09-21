@@ -15,6 +15,7 @@ class SessionStorage {
   setItem (key, value) {
     if (value instanceof Object) {
       sessionStorage.setItem(
+        key,
         JSON.stringify(value)
       )
     } else {

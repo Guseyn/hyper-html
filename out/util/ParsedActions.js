@@ -35,12 +35,11 @@ var ActionByNameWithParams = require('./ActionByNameWithParams');
 var ParsedActions =
 /*#__PURE__*/
 function () {
-  function ParsedActions(actions, supportedActions, tagName, obj) {
+  function ParsedActions(actions, tagName, obj) {
     _classCallCheck(this, ParsedActions);
 
     // act1(p1, p2); act(q1, q2); ...
     this.actions = actions;
-    this.supportedActions = supportedActions;
     this.tagName = tagName;
     this.obj = obj;
   }
@@ -63,10 +62,6 @@ function () {
       });
       splitedActions.forEach(function (action) {
         var actionName = action.split('(')[0].trim();
-
-        if (_this.supportedActions.indexOf(actionName) === -1) {
-          throw new Error("action ".concat(actionName, " is not supported for the element ").concat(_this.tagName));
-        }
 
         var actionParams = _this.actionParams(action, actionName);
 

@@ -26,7 +26,7 @@ function () {
     key: "setItem",
     value: function setItem(key, value) {
       if (value instanceof Object) {
-        sessionStorage.setItem(JSON.stringify(value));
+        sessionStorage.setItem(key, JSON.stringify(value));
       } else {
         sessionStorage.setItem(value);
       }

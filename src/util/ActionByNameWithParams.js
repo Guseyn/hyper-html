@@ -27,7 +27,8 @@ const actions = {
   },
 
   saveToSessionStorage: (key, value) => {
-    return new SessionStorageWithSetValue(sessionStorage, key, value)
+    // eslint-disable-next-line no-undef
+    return new SessionStorageWithSetValue(sessionStorageWrapper, key, value)
   },
 
   hideElms: (...elmSelectors) => {

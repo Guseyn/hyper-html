@@ -17,99 +17,84 @@ class EForm extends E {
   }
 
   static get observedAttributes () {
-    return [
-      'data-request-url',
-      'data-request-method',
-      'data-request-headers',
-      'data-request-button',
-      'data-upload-progress-bar',
-      'data-progress-bar',
-      'data-response-object-name',
-      'data-actions-on-response'
-    ]
-  }
-
-  supportedActions () {
-    return [
-      'redirect',
-      'saveToLocalStorage',
-      'saveToSessionStorage',
-      'innerHTML',
-      'addHTMLTo',
-      'mapObjToElm',
-      'hideElms',
-      'showElms',
-      'disableElms',
-      'enableElms',
-      'changeElmsClassName'
-    ]
+    return [ ]
   }
 
   onRender () {
-    const requestButton = new ParsedElmSelectors(
-      this.getAttribute('data-request-button')
-    ).value()[0]
+    this.inputs = this.getElementsByTagName('input')
+    this.selects = this.getElementsByTagName('select')
+    this.textareas = this.getElementsByTagName('textarea')
+    this.localStorageValues = this.getElementsByTagName('e-local-storage-value')
+    this.sessionStorageValues = this.getElementsByTagName('e-session-storage-value')
+    this.buttons = this.getElementsByTagName('button')
+    this.progressBars = this.getElementsByTagName('progress')
+    this.tuneFileInputs(this.filteredFileInputs(this.inputs))
+    this.propagateFormSendEvent(this.inputs)
+    this.propagateFormSendEvent(this.selects)
+    this.propagateFormSendEvent(this.textareas)
+    this.propagateFormSendEvent(this.localStorageValues)
+    this.propagateFormSendEvent(this.sessionStorageValues)
+    this.propagateFormSendEvent(this.buttons)
+    this.prepareProgressBars(this.progressBars)
+  }
+
+  propagateFormSendEvent (elms) {
+    for (let index = 0; index < elms.length; index++) {
+      const elm = elms[index]
+      const eventName = elm.getAttribute('data-send-form-on')
+      if (eventName) {
+        elm.addEventListener(eventName, () => {
+          this.submit(elm)
+        })
+      }
+    }
+  }
+
+  submit (target) {
     const uploadProgressBar = new ParsedElmSelectors(
-      this.getAttribute('data-upload-progress-bar')
+      target.getAttribute('data-upload-progress-bar')
     ).value()[0]
     const progressBar = new ParsedElmSelectors(
-      this.getAttribute('data-progress-bar')
+      target.getAttribute('data-progress-bar')
     ).value()[0]
-    this.tuneFileInputs(
-      this.filteredFileInputs(
-        this.getElementsByTagName('input')
-      ), requestButton
-    )
-    if (requestButton) {
-      requestButton.addEventListener('click', () => {
-        requestButton.disabled = true
-        const requestBody = this.requestBody()
-        new ParsedJSON(
-          new ResponseBody(
-            new ResponseFromAjaxRequest(
-              new CreatedOptions(
-                'url', this.getAttribute('data-request-url'),
-                'headers', new ParsedJSON(
-                  this.getAttribute('data-request-headers') || '{}'
-                ),
-                'method', this.getAttribute('data-request-method') || 'POST',
-                'uploadProgressEvent', this.showProgress(uploadProgressBar),
-                'progressEvent', this.showProgress(progressBar)
-              ),
-              new StringifiedJSON(
-                requestBody
-              )
-            )
+    target.disabled = true
+    const requestBody = this.requestBody()
+    new ParsedJSON(
+      new ResponseBody(
+        new ResponseFromAjaxRequest(
+          new CreatedOptions(
+            'url', target.getAttribute('data-request-url'),
+            'headers', new ParsedJSON(
+              target.getAttribute('data-request-headers') || '{}'
+            ),
+            'method', target.getAttribute('data-request-method') || 'POST',
+            'uploadProgressEvent', this.showProgress(uploadProgressBar),
+            'progressEvent', this.showProgress(progressBar)
+          ),
+          new StringifiedJSON(
+            requestBody
           )
-        ).as('RESPONSE').after(
-          new EnabledElements([requestButton]).after(
-            new AppliedActionsOnResponse(
-              this.tagName,
-              this.getAttribute('data-response-object-name'),
-              this.getAttribute('data-actions-on-response'),
-              this.supportedActions(),
-              as('RESPONSE')
-            )
-          )
-        ).call()
-      })
-    }
-    this.prepareProgressBar(uploadProgressBar)
-    this.prepareProgressBar(progressBar)
+        )
+      )
+    ).as('RESPONSE').after(
+      new EnabledElements([target]).after(
+        new AppliedActionsOnResponse(
+          target.tagName,
+          target.getAttribute('data-response-object-name'),
+          target.getAttribute('data-actions-on-response'),
+          as('RESPONSE')
+        )
+      )
+    ).call()
   }
 
   requestBody () {
-    const inputs = this.getElementsByTagName('input')
-    const selects = this.getElementsByTagName('select')
-    const textareas = this.getElementsByTagName('textarea')
-    const localStorageValues = this.getElementsByTagName('e-local-storage-value')
-    const sessionStorageValues = this.getElementsByTagName('e-session-storage-value')
     const requestBody = {}
-    this.retrievedValuesFromInputsForRequestBody(inputs, requestBody)
-    this.retrievedValuesFromSelectsForRequestBody(selects, requestBody)
-    this.retrievedValuesFromTextareasForRequestBody(textareas, requestBody)
-    this.retrievedValuesFromLocalStorageForRequestBody(localStorageValues, requestBody)
-    this.retrievedValuesFromSessionStorageForRequestBody(sessionStorageValues, requestBody)
+    this.retrievedValuesFromInputsForRequestBody(this.inputs, requestBody)
+    this.retrievedValuesFromSelectsForRequestBody(this.selects, requestBody)
+    this.retrievedValuesFromTextareasForRequestBody(this.textareas, requestBody)
+    this.retrievedValuesFromLocalStorageForRequestBody(this.localStorageValues, requestBody)
+    this.retrievedValuesFromSessionStorageForRequestBody(this.sessionStorageValues, requestBody)
     return requestBody
   }
 
@@ -173,38 +158,32 @@ class EForm extends E {
     }
   }
 
-  tuneFileInputs (fileInputs, requestButton) {
+  tuneFileInputs (fileInputs) {
     for (let index = 0; index < fileInputs.length; index++) {
-      this.tuneFileInput(fileInputs[index], requestButton)
+      this.tuneFileInput(fileInputs[index])
     }
   }
 
-  tuneFileInput (fileInput, requestButton) {
+  tuneFileInput (fileInput) {
     const readProgressBar = new ParsedElmSelectors(
       fileInput.getAttribute('data-read-progress-bar')
     ).value()[0]
-    this.prepareProgressBar(readProgressBar)
     fileInput.addEventListener('change', () => {
-      this.readFilesContentForRequestBody(fileInput, requestButton, readProgressBar)
+      this.readFilesContentForRequestBody(fileInput, readProgressBar)
     })
   }
 
-  readFilesContentForRequestBody (fileInput, requestButton, readProgressBar) {
+  readFilesContentForRequestBody (fileInput, readProgressBar) {
     fileInput.filesInfo = []
     for (let index = 0; index < fileInput.files.length; index++) {
-      this.readFileContentForRequestBody(fileInput, requestButton, readProgressBar, index)
+      this.readFileContentForRequestBody(fileInput, readProgressBar, index)
     }
   }
 
-  readFileContentForRequestBody (fileInput, requestButton, readProgressBar, index) {
+  readFileContentForRequestBody (fileInput, readProgressBar, index) {
     const file = fileInput.files[index]
     const reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onloadstart = () => {
-      if (requestButton) {
-        requestButton.setAttribute('disabled', true)
-      }
-    }
     reader.onload = () => {
       fileInput.filesInfo[index] = new FileInfo(
         file.name,
@@ -213,14 +192,6 @@ class EForm extends E {
         reader.result,
         file.lastModifiedDate
       )
-      if (requestButton) {
-        requestButton.removeAttribute('disabled')
-      }
-    }
-    reader.onabort = () => {
-      if (requestButton) {
-        requestButton.removeAttribute('disabled')
-      }
     }
     reader.onprogress = this.showProgress(readProgressBar)
     reader.onloadend = this.hideProgress(readProgressBar)
@@ -242,8 +213,9 @@ class EForm extends E {
     return fileInputs
   }
 
-  prepareProgressBar (progressBar) {
-    if (progressBar) {
+  prepareProgressBars (progressBars) {
+    for (let index = 0; index < progressBars.length; index++) {
+      const progressBar = progressBars[index]
       progressBar.max = 100
       progressBar.value = 0
       progressBar.style.display = 'none'
