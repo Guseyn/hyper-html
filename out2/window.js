@@ -6,8 +6,30 @@ function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _co
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var _require = require('./actions/exports'),
-    ActionByNameWithParams = _require.ActionByNameWithParams;
+var _require = require('./cutie/exports'),
+    as = _require.as;
+
+var _require2 = require('./actions/exports'),
+    ActionByNameWithParams = _require2.ActionByNameWithParams;
+
+var _require3 = require('./async-string/exports'),
+    StringFromBuffer = _require3.StringFromBuffer;
+
+var _require4 = require('./async-ajax/exports'),
+    ResponseFromAjaxRequest = _require4.ResponseFromAjaxRequest,
+    ResponseBody = _require4.ResponseBody;
+
+var _require5 = require('./async-object/exports'),
+    CreatedOptions = _require5.CreatedOptions;
+
+var _require6 = require('./async-dom/exports'),
+    ReplacedElementWithAnotherOne = _require6.ReplacedElementWithAnotherOne,
+    ExtractedDocument = _require6.ExtractedDocument,
+    BodyOfDocument = _require6.BodyOfDocument,
+    TitleOfDocument = _require6.TitleOfDocument,
+    FaviconOfDocument = _require6.FaviconOfDocument,
+    ChangedPageTitle = _require6.ChangedPageTitle,
+    ChangedPageFavicon = _require6.ChangedPageFavicon;
 
 window.eMappedRegExps = {};
 
@@ -30,22 +52,7 @@ var retrievedValue = function retrievedValue(target, value) {
 
 window.onpopstate = function (event) {
   if (event.state) {
-    document.body.innerHTML = event.state.body;
-    document.title = event.state.title;
-
-    if (event.state.favicon) {
-      var oldLink = document.querySelector("link[rel*='icon']");
-      var newLink = document.createElement('link');
-      newLink.type = 'image/x-icon';
-      newLink.rel = 'shortcut icon';
-      newLink.href = event.state.favicon;
-
-      if (oldLink) {
-        document.head.removeChild(oldLink);
-      }
-
-      document.head.appendChild(newLink);
-    }
+    new ExtractedDocument(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', event.state.url, 'method', 'GET', 'headers', event.state.headers))))).as('DOC').after(new ReplacedElementWithAnotherOne(document.body, new BodyOfDocument(as('DOC'))).after(new ChangedPageTitle(document, new TitleOfDocument(as('DOC'))).after(new ChangedPageFavicon(document, new FaviconOfDocument(as('DOC')))))).call();
   }
 };
 

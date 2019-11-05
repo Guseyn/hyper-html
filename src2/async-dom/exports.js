@@ -1,5 +1,5 @@
 module.exports = {
-  BodyInnerHTMLOfDocument: require('./BodyInnerHTMLOfDocument'),
+  BodyOfDocument: require('./BodyOfDocument'),
   ChangedPageFavicon: require('./ChangedPageFavicon'),
   ChangedPageTitle: require('./ChangedPageTitle'),
   CreatedDocumentFragmentWithAttributes: require('./CreatedDocumentFragmentWithAttributes'),
@@ -21,6 +21,7 @@ module.exports = {
   ParsedElmSelectors: require('./ParsedElmSelectors'),
   PreparedProgressBar: require('./PreparedProgressBar'),
   PreparedProgressBars: require('./PreparedProgressBars'),
+  ReplacedElementWithAnotherOne: require('./ReplacedElementWithAnotherOne'),
   ShownElement: require('./ShownElement'),
   ShownElements: require('./ShownElements'),
   TitleOfDocument: require('./TitleOfDocument'),

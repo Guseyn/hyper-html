@@ -1,6 +1,11 @@
 'use strict'
 
+const { as } = require('./cutie/exports')
 const { ActionByNameWithParams } = require('./actions/exports')
+const { StringFromBuffer } = require('./async-string/exports')
+const { ResponseFromAjaxRequest, ResponseBody } = require('./async-ajax/exports')
+const { CreatedOptions } = require('./async-object/exports')
+const { ReplacedElementWithAnotherOne, ExtractedDocument, BodyOfDocument, TitleOfDocument, FaviconOfDocument, ChangedPageTitle, ChangedPageFavicon } = require('./async-dom/exports')
 
 window.eMappedRegExps = {}
 
@@ -22,19 +27,40 @@ const retrievedValue = (target, value) => {
 
 window.onpopstate = (event) => {
   if (event.state) {
-    document.body.innerHTML = event.state.body
-    document.title = event.state.title
-    if (event.state.favicon) {
-      const oldLink = document.querySelector("link[rel*='icon']")
-      const newLink = document.createElement('link')
-      newLink.type = 'image/x-icon'
-      newLink.rel = 'shortcut icon'
-      newLink.href = event.state.favicon
-      if (oldLink) {
-        document.head.removeChild(oldLink)
-      }
-      document.head.appendChild(newLink)
-    }
+    new ExtractedDocument(
+      new StringFromBuffer(
+        new ResponseBody(
+          new ResponseFromAjaxRequest(
+            new CreatedOptions(
+              'url', event.state.url,
+              'method', 'GET',
+              'headers', event.state.headers
+            )
+          )
+        )
+      )
+    ).as('DOC').after(
+      new ReplacedElementWithAnotherOne(
+        document.body,
+        new BodyOfDocument(
+          as('DOC')
+        )
+      ).after(
+        new ChangedPageTitle(
+          document,
+          new TitleOfDocument(
+            as('DOC')
+          )
+        ).after(
+          new ChangedPageFavicon(
+            document,
+            new FaviconOfDocument(
+              as('DOC')
+            )
+          )
+        )
+      )
+    ).call()
   }
 }
 

@@ -4,6 +4,7 @@
 const responseFromAjaxRequest = (options, requestBody, callback) => {
   let resObj = {}
   const req = new XMLHttpRequest()
+  req.open(options.method, options.url, true, options.user || null, options.password || null)
   req.withCredentials = options.withCredentials || false
   req.timeout = options.timeout || 0
   if (options.overrideMimeType !== undefined) {
@@ -32,7 +33,6 @@ const responseFromAjaxRequest = (options, requestBody, callback) => {
   }
   req.addEventListener('progress', options.progressEvent)
   req.upload.addEventListener('progress', options.uploadProgressEvent)
-  req.open(options.method, options.url, true, options.user || null, options.password || null)
   req.send(requestBody)
 }
 

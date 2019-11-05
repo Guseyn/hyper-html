@@ -2,7 +2,7 @@
 
 const { AsyncObject } = require('@page-libs/cutie')
 
-class BodyInnerHTMLOfDocument extends AsyncObject {
+class BodyOfDocument extends AsyncObject {
   constructor (doc) {
     super(doc)
   }
@@ -10,11 +10,11 @@ class BodyInnerHTMLOfDocument extends AsyncObject {
   syncCall () {
     return (doc) => {
       if (doc.body) {
-        return doc.body.innerHTML
+        return doc.body
       }
       throw new Error('body element is missing in the html resource')
     }
   }
 }
 
-module.exports = BodyInnerHTMLOfDocument
+module.exports = BodyOfDocument

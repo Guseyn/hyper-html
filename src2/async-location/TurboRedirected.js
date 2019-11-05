@@ -4,7 +4,7 @@ const { as } = require('./../cutie/exports')
 const { StringFromBuffer } = require('./../async-string/exports')
 const { ResponseFromAjaxRequest, ResponseBody } = require('./../async-ajax/exports')
 const { CreatedOptions } = require('./../async-object/exports')
-const { ElementWithInnerHTML, ExtractedDocument, BodyInnerHTMLOfDocument, TitleOfDocument, FaviconOfDocument, ChangedPageTitle, ChangedPageFavicon } = require('./../async-dom/exports')
+const { ReplacedElementWithAnotherOne, ExtractedDocument, BodyOfDocument, TitleOfDocument, FaviconOfDocument, ChangedPageTitle, ChangedPageFavicon } = require('./../async-dom/exports')
 const { PushedStartStateToHistoryIfNeeded, PushedStateToHistory } = require('./../async-history/exports')
 const { ShowProgressEvent } = require('./../events/exports')
 
@@ -23,7 +23,12 @@ class TurboRedirected {
         document.body.prepend(progressBar)
       }
     }
-    return new PushedStartStateToHistoryIfNeeded().after(
+    return new PushedStartStateToHistoryIfNeeded(
+      new CreatedOptions(
+        'url', location.href,
+        'headers', headers
+      ), location.href
+    ).after(
       new ChangedPageFavicon(
         document, ajaxFavicon, true
       ).after(
@@ -43,7 +48,7 @@ class TurboRedirected {
             )
           )
         ).as('DOC').after(
-          new BodyInnerHTMLOfDocument(
+          new BodyOfDocument(
             as('DOC')
           ).as('BODY').after(
             new TitleOfDocument(
@@ -54,13 +59,12 @@ class TurboRedirected {
               ).as('FAVICON').after(
                 new PushedStateToHistory(
                   new CreatedOptions(
-                    'body', as('BODY'),
-                    'title', as('TITLE'),
-                    'favicon', as('FAVICON')
+                    'url', href,
+                    'headers', headers
                   ),
                   href
                 ).after(
-                  new ElementWithInnerHTML(
+                  new ReplacedElementWithAnotherOne(
                     document.body,
                     as('BODY')
                   ).after(

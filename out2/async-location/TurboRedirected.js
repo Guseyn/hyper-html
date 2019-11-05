@@ -16,9 +16,9 @@ var _require4 = require('./../async-object/exports'),
     CreatedOptions = _require4.CreatedOptions;
 
 var _require5 = require('./../async-dom/exports'),
-    ElementWithInnerHTML = _require5.ElementWithInnerHTML,
+    ReplacedElementWithAnotherOne = _require5.ReplacedElementWithAnotherOne,
     ExtractedDocument = _require5.ExtractedDocument,
-    BodyInnerHTMLOfDocument = _require5.BodyInnerHTMLOfDocument,
+    BodyOfDocument = _require5.BodyOfDocument,
     TitleOfDocument = _require5.TitleOfDocument,
     FaviconOfDocument = _require5.FaviconOfDocument,
     ChangedPageTitle = _require5.ChangedPageTitle,
@@ -54,7 +54,7 @@ var TurboRedirected = function TurboRedirected(href, headers, _ref) {
     }
   }
 
-  return new PushedStartStateToHistoryIfNeeded().after(new ChangedPageFavicon(document, ajaxFavicon, true).after(new ExtractedDocument(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', href, 'method', 'GET', 'headers', headers, 'progressEvent', new ShowProgressEvent(progressBar, true)))))).as('DOC').after(new BodyInnerHTMLOfDocument(as('DOC')).as('BODY').after(new TitleOfDocument(as('DOC')).as('TITLE').after(new FaviconOfDocument(as('DOC')).as('FAVICON').after(new PushedStateToHistory(new CreatedOptions('body', as('BODY'), 'title', as('TITLE'), 'favicon', as('FAVICON')), href).after(new ElementWithInnerHTML(document.body, as('BODY')).after(new ChangedPageTitle(document, as('TITLE')).after(new ChangedPageFavicon(document, as('FAVICON')))))))))));
+  return new PushedStartStateToHistoryIfNeeded(new CreatedOptions('url', location.href, 'headers', headers), location.href).after(new ChangedPageFavicon(document, ajaxFavicon, true).after(new ExtractedDocument(new StringFromBuffer(new ResponseBody(new ResponseFromAjaxRequest(new CreatedOptions('url', href, 'method', 'GET', 'headers', headers, 'progressEvent', new ShowProgressEvent(progressBar, true)))))).as('DOC').after(new BodyOfDocument(as('DOC')).as('BODY').after(new TitleOfDocument(as('DOC')).as('TITLE').after(new FaviconOfDocument(as('DOC')).as('FAVICON').after(new PushedStateToHistory(new CreatedOptions('url', href, 'headers', headers), href).after(new ReplacedElementWithAnotherOne(document.body, as('BODY')).after(new ChangedPageTitle(document, as('TITLE')).after(new ChangedPageFavicon(document, as('FAVICON')))))))))));
 };
 
 module.exports = TurboRedirected;

@@ -26,25 +26,18 @@ var PushedStartStateToHistoryIfNeeded =
 function (_AsyncObject) {
   _inherits(PushedStartStateToHistoryIfNeeded, _AsyncObject);
 
-  function PushedStartStateToHistoryIfNeeded() {
+  function PushedStartStateToHistoryIfNeeded(state, href) {
     _classCallCheck(this, PushedStartStateToHistoryIfNeeded);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(PushedStartStateToHistoryIfNeeded).call(this));
+    return _possibleConstructorReturn(this, _getPrototypeOf(PushedStartStateToHistoryIfNeeded).call(this, state, href));
   }
 
   _createClass(PushedStartStateToHistoryIfNeeded, [{
     key: "syncCall",
     value: function syncCall() {
-      return function () {
-        var favicon = document.querySelector("link[rel*='icon']");
-        var state = {
-          body: document.body.innerHTML,
-          title: document.title,
-          favicon: favicon ? favicon.href : null
-        };
-
+      return function (state, href) {
         if (sessionStorage.getItem('isFirstStatePushedToHistory') === 'false') {
-          history.replaceState(state, null, location.pathname + location.search);
+          history.replaceState(state, null, href);
           sessionStorage.setItem('isFirstStatePushedToHistory', 'true');
         }
 

@@ -3,24 +3,14 @@
 const { AsyncObject } = require('./../cutie/exports')
 
 class PushedStartStateToHistoryIfNeeded extends AsyncObject {
-  constructor () {
-    super()
+  constructor (state, href) {
+    super(state, href)
   }
 
   syncCall () {
-    return () => {
-      const favicon = document.querySelector("link[rel*='icon']")
-      const state = {
-        body: document.body.innerHTML,
-        title: document.title,
-        favicon: favicon ? favicon.href : null
-      }
+    return (state, href) => {
       if (sessionStorage.getItem('isFirstStatePushedToHistory') === 'false') {
-        history.replaceState(
-          state,
-          null,
-          location.pathname + location.search
-        )
+        history.replaceState(state, null, href)
         sessionStorage.setItem('isFirstStatePushedToHistory', 'true')
       }
       return state

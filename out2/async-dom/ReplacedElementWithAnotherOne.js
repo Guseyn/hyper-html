@@ -18,34 +18,31 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var _require = require('@page-libs/cutie'),
+var _require = require('./../cutie/exports'),
     AsyncObject = _require.AsyncObject;
 
-var BodyOfDocument =
+var ReplacedElementWithAnotherOne =
 /*#__PURE__*/
 function (_AsyncObject) {
-  _inherits(BodyOfDocument, _AsyncObject);
+  _inherits(ReplacedElementWithAnotherOne, _AsyncObject);
 
-  function BodyOfDocument(doc) {
-    _classCallCheck(this, BodyOfDocument);
+  function ReplacedElementWithAnotherOne(oldElement, newElement) {
+    _classCallCheck(this, ReplacedElementWithAnotherOne);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(BodyOfDocument).call(this, doc));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ReplacedElementWithAnotherOne).call(this, oldElement, newElement));
   }
 
-  _createClass(BodyOfDocument, [{
+  _createClass(ReplacedElementWithAnotherOne, [{
     key: "syncCall",
     value: function syncCall() {
-      return function (doc) {
-        if (doc.body) {
-          return doc.body;
-        }
-
-        throw new Error('body element is missing in the html resource');
+      return function (oldElement, newElement) {
+        oldElement.parentNode.replaceChild(newElement, oldElement);
+        return newElement;
       };
     }
   }]);
 
-  return BodyOfDocument;
+  return ReplacedElementWithAnotherOne;
 }(AsyncObject);
 
-module.exports = BodyOfDocument;
+module.exports = ReplacedElementWithAnotherOne;
