@@ -69,9 +69,9 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   And for example, `first.html` would look something like this
 
   ```html
-    <div class="article">
-      <!-- some content of the first article -->
-    </div>
+  <div class="article">
+    <!-- some content of the first article -->
+  </div>
   ```
 
   And when you open `articles.html` in a browser, it will be rendered as if you included all the parts in one file:
@@ -149,7 +149,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="albumResponse"
     data-actions-on-response="
       mapObjToElm('${albumResponse.body}', '#album-info');
-    "
+    ">
 
     <div id="album-info" data-object-name="album">
       <div data-text="Title: ${album.title}"></div>
@@ -205,8 +205,8 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="albumResponse"
     data-actions-on-response="
       mapObjToElm('${albumResponse.body}', '#album-info');
-    "
-    
+    ">
+
     <div id="album-info" data-object-name="album">
 
       <div data-text="Title: ${album.title}"></div>
@@ -235,8 +235,8 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="albumResponse"
     data-actions-on-response="
       mapObjToElm('${albumResponse.body}', '#album-info');
-    "
-  >
+    ">
+
     <div id="album-info" data-object-name="album">
 
       <div>Title: Humbug</div>
@@ -333,8 +333,8 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="albumResponse"
     data-actions-on-response="
       mapObjToElm('${albumResponse.body}', '#album-info');
-    "
-  >
+    ">
+
     <div id="album-info" data-object-name="album">
 
       <div data-text="Title: ${album.title}"></div>
@@ -369,8 +369,8 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="albumResponse"
     data-actions-on-response="
       mapObjToElm('${albumResponse.body}', '#album-info');
-    "
-  >
+    ">
+
     <div id="album-info" data-object-name="album">
 
       <div>Title: Humbug</div>
@@ -566,7 +566,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
     data-response-name="responseWithToken"
     data-actions-on-response="
       saveToLocalStorage('jwt', '${responseWithToken.body.jwt}');
-    "
+    ">
 
     <span id="google-icon" class="icon"></span>
     <span class="buttonText">Sign in with Google</span>
@@ -627,7 +627,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   </body>
   ```
 
-  Element `e-page-with-url` is a template because we have to initialize `urlParams` before we render all elements that use them. 
+  Element `e-page-with-url` is a template because we have to initialize `urlParams` before we render all elements that use those parameters. 
 
   More details you can find in the [examples](#examples).
 
@@ -639,7 +639,9 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   **EHTML** supports [turbolinks](https://github.com/turbolinks/turbolinks) via `e-turbolink`. The main difference from classic turbolinks is that `e-tubolink` does not merge `<head>` from the page it fetches. The idea behind this decision was that it would make rendered html code much cleaner(but this decision is still discussable).
 
   ```html
-  <e-turbolink data-href="/../html/next.html" data-ajax-favicon="/../images/ajax-loader.gif">next page</e-turbolink>
+  <e-turbolink data-href="/../html/next.html" data-ajax-favicon="/../images/ajax-loader.gif">
+    next page
+  </e-turbolink>
   ```
 
   `e-turbolink` will be rendered as a simple link `<a>` with attribute `data-e-turbolink="true"`. When you click on a `e-turbolink`, it fetches a page which is served with the path that you specify in the attribute `data-href`, extracts `<body>` from there and swaps it with current `<body>`. Also it saves history, so you can use Reload, Back and Forward buttons in the browser.
@@ -651,7 +653,9 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   But you can use progress bars instead via `data-with-progress-bar`:
 
   ```html
-  <e-turbolink data-href="/../html/next.html" data-with-progress-bar="progress-bar">next page</e-turbolink>
+  <e-turbolink data-href="/../html/next.html" data-with-progress-bar="progress-bar">
+    next page
+  </e-turbolink>
   ```
   where value of this attribute is a css class:
 
@@ -664,6 +668,27 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can also specify a place for the progress bar via attribute `data-progress-bar-place`, by default it's `body`.
 
   Demo of `e-turbolink` you can find in the [examples](#examples).
+
+</details>
+
+<details>
+  <summary><b>E-SELECT</b></summary>
+
+  Standard `select` can be better. For example, it would be great if could set a value to it, so it would be selected on render. `e-select` does such thing:
+
+  ```html
+  <e-select
+    name="color" 
+    value="green">
+    <option value="red" name="color">Red</option>
+    <option value="green" name="color">Green</option>
+    <option value="blue" name="color">Blue</option>
+  </e-select>
+  ```
+
+  It will be rendered as a simple select with attribute `data-e-select="true"` with automatically selected value that you specify in attribute `value`.
+
+  Demo of `e-select` you can find in the [examples](#examples).
 
 </details>
 
