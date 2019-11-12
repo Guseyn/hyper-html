@@ -227,7 +227,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
 
   So, as you can see it's pretty straightforward: `e-for-each template` has attribute `data-list-to-iterate` where you can specify the list from the mapped object that you want to iterate. And attribute `data-item-name` specifies the name of the item that you want to map to the `template`. You can also use `index` property of the item in the mapping which starts from 1.
 
-  When you open a browser, `template` will be replaced with its `n` times duplicated inner content for each item, where `n` is the length of list that has been iterated:
+  When you open a browser, `template` will be replaced with its `n` times duplicated inner content for each item, where `n` is the length of the list that has been iterated:
 
   ```html
   <e-json
@@ -237,64 +237,61 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
       mapObjToElm('${albumResponse.body}', '#album-info');
     ">
 
-    <template id="album-info" data-object-name="album">
+    <div>Title: Humbug</div>
+    <div>Artist: Arctic Monkeys</div>
 
-      <div>Title: Humbug</div>
-      <div>Artist: Arctic Monkeys</div>
+    <div><b>10 songs:</b></div>
+    <div class="song-box">
+      <div>No. 1/10</div>
+      <div>Title: My Propeller</div>
+      <div>Length: 3:27</div>
+    </div>
+    <div class="song-box">
+      <div>No. 2/10</div>
+      <div>Title: Crying Lightning</div>
+      <div>Length: 3:43</div>
+    </div>
+    <div class="song-box">
+      <div>No. 3/10</div>
+      <div>Title: Dangerous Animals</div>
+      <div>Length: 3:30</div>
+    </div>
+    <div class="song-box">
+      <div>No. 4/10</div>
+      <div>Title: Secret Door</div>
+      <div>Length: 3:43</div>
+    </div>
+    <div class="song-box">
+      <div>No. 5/10</div>
+      <div>Title: Potion Approaching</div>
+      <div>Length: 3:32</div>
+    </div>
+    <div class="song-box">
+      <div>No. 6/10</div>
+      <div>Title: Fire and the Thud</div>
+      <div>Length: 3:57</div>
+    </div>
+    <div class="song-box">
+      <div>No. 7/10</div>
+      <div>Title: Cornerstone</div>
+      <div>Length: 3:18</div>
+    </div>
+    <div class="song-box">
+      <div>No. 8/10</div>
+      <div>Title: Dance Little Liar</div>
+      <div>Length: 4:43</div>
+    </div>
+    <div class="song-box">
+      <div>No. 9/10</div>
+      <div>Title: Pretty Visitors</div>
+      <div>Length: 3:40</div>
+    </div>
+    <div class="song-box">
+      <div>No. 10/10</div>
+      <div>Title: The Jeweller's Hands</div>
+      <div>Length: 5:42</div>
+    </div>
 
-      <div><b>10 songs:</b></div>
-      <div class="song-box">
-        <div>No. 1/10</div>
-        <div>Title: My Propeller</div>
-        <div>Length: 3:27</div>
-      </div>
-      <div class="song-box">
-        <div>No. 2/10</div>
-        <div>Title: Crying Lightning</div>
-        <div>Length: 3:43</div>
-      </div>
-      <div class="song-box">
-        <div>No. 3/10</div>
-        <div>Title: Dangerous Animals</div>
-        <div>Length: 3:30</div>
-      </div>
-      <div class="song-box">
-        <div>No. 4/10</div>
-        <div>Title: Secret Door</div>
-        <div>Length: 3:43</div>
-      </div>
-      <div class="song-box">
-        <div>No. 5/10</div>
-        <div>Title: Potion Approaching</div>
-        <div>Length: 3:32</div>
-      </div>
-      <div class="song-box">
-        <div>No. 6/10</div>
-        <div>Title: Fire and the Thud</div>
-        <div>Length: 3:57</div>
-      </div>
-      <div class="song-box">
-        <div>No. 7/10</div>
-        <div>Title: Cornerstone</div>
-        <div>Length: 3:18</div>
-      </div>
-      <div class="song-box">
-        <div>No. 8/10</div>
-        <div>Title: Dance Little Liar</div>
-        <div>Length: 4:43</div>
-      </div>
-      <div class="song-box">
-        <div>No. 9/10</div>
-        <div>Title: Pretty Visitors</div>
-        <div>Length: 3:40</div>
-      </div>
-      <div class="song-box">
-        <div>No. 10/10</div>
-        <div>Title: The Jeweller's Hands</div>
-        <div>Length: 5:42</div>
-      </div>
-
-    </template>
   </e-json>
   ```
 
@@ -371,29 +368,26 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
       mapObjToElm('${albumResponse.body}', '#album-info');
     ">
 
-    <template id="album-info" data-object-name="album">
+    <div>Title: Humbug</div>
+    <div>Artist: Arctic Monkeys</div>
 
-      <div>Title: Humbug</div>
-      <div>Artist: Arctic Monkeys</div>
+    <div><b>Songs that shorter than 3:30:</b></div>
+    <div class="song-box">
+      <div>No. 1/10</div>
+      <div>Title: My Propeller</div>
+      <div>Length: 3:27</div>
+    </div>
+    <div class="song-box">
+      <div>No. 3/10</div>
+      <div>Title: Dangerous Animals</div>
+      <div>Length: 3:30</div>
+    </div>
+    <div class="song-box">
+      <div>No. 7/10</div>
+      <div>Title: Cornerstone</div>
+      <div>Length: 3:18</div>
+    </div>
 
-      <div><b>Songs that shorter than 3:30:</b></div>
-      <div class="song-box">
-        <div>No. 1/10</div>
-        <div>Title: My Propeller</div>
-        <div>Length: 3:27</div>
-      </div>
-      <div class="song-box">
-        <div>No. 3/10</div>
-        <div>Title: Dangerous Animals</div>
-        <div>Length: 3:30</div>
-      </div>
-      <div class="song-box">
-        <div>No. 7/10</div>
-        <div>Title: Cornerstone</div>
-        <div>Length: 3:18</div>
-      </div>
-
-    </template>
   </e-json>
   ```
 
