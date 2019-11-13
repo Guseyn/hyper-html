@@ -696,7 +696,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   If you just want to log response to console, use `logToConsole` function:
 
   ```html
-    data-actions-on-response="logToConsole('${someResponse}')"
+  data-actions-on-response="logToConsole('${someResponse}')"
   ```
 
 </details>
@@ -707,7 +707,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can map response object to element which must be `<template>`.
 
   ```html
-    data-actions-on-response="mapObjToElm('${someResponse.body}', '#someTemplateId')"
+  data-actions-on-response="mapObjToElm('${someResponse.body}', '#someTemplateId')"
   ```
 
   Element with id `someTemplateId` must have `data-object-name`, so you can use object name in the mapping. You can use any selector for the second argument, but this function will only map the first element that was found by the selector you specified.
@@ -720,7 +720,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can redirect on response:
 
   ```html
-    data-actions-on-response="redirect('/../some/path/${someResponse.body.itemId}')"
+  data-actions-on-response="redirect('/../some/path/${someResponse.body.itemId}')"
   ```
 
 </details>
@@ -731,7 +731,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can redirect in the turbo style on response:
 
   ```html
-    data-actions-on-response="turboRedirect('/../some/path/${someResponse.body.itemId}', { 'headerName': 'headerValue' }, { 'progressBarPlace': '#boxId', 'progressBarClassName': 'progress-bar', 'ajaxFavicon': '/../images/favicon.gif' })"
+  data-actions-on-response="turboRedirect('/../some/path/${someResponse.body.itemId}', { 'headerName': 'headerValue' }, { 'progressBarPlace': '#boxId', 'progressBarClassName': 'progress-bar', 'ajaxFavicon': '/../images/favicon.gif' })"
   ```
 
   You can specify headers if you need them, otherwise just put empty object: `{ }`. Also, you can specify optionaly `progressBarPlace`, `progressBarClassName` and `ajaxFavicon` like in the `e-turbolink`.
@@ -745,10 +745,10 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can save some value from the response to the `localStorage` or `sessionStorage`:
 
   ```html
-    data-actions-on-response="
-      saveToLocalStorage('key', ${someResponse.body.value}');
-      saveToSessionStorage('key', ${someResponse.body.value}');
-    "
+  data-actions-on-response="
+    saveToLocalStorage('key', ${someResponse.body.value}');
+    saveToSessionStorage('key', ${someResponse.body.value}');
+  "
   ```
 
   You can specify headers if you need them, otherwise just put empty object: `{ }`. Also, you can specify optionaly `progressBarPlace`, `progressBarClassName` and `ajaxFavicon` like in the `e-turbolink`.
@@ -762,12 +762,12 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can hide, show, disable and enable elements on response:
 
   ```html
-    data-actions-on-response="
-      hideElms('#someId', '.someClassName', ...);
-      showElms('#someId', '.someClassName', ...);
-      disableElms('#someId', '.someClassName', ...);
-      enableElms('#someId', '.someClassName', ...);
-    "
+  data-actions-on-response="
+    hideElms('#someId', '.someClassName', ...);
+    showElms('#someId', '.someClassName', ...);
+    disableElms('#someId', '.someClassName', ...);
+    enableElms('#someId', '.someClassName', ...);
+  "
   ```
 
 </details>
@@ -778,7 +778,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can toggle class name for elments on response:
 
   ```html
-    data-actions-on-response="toggleElms('someClassName', '#someId', '.someClassName', ...)"
+  data-actions-on-response="toggleElms('someClassName', '#someId', '.someClassName', ...)"
   ```
 
 </details>
@@ -789,11 +789,11 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can load html or text content into some element from some resource on response:
 
   ```html
-    data-actions-on-response="
-      innerHTML('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
-      addHTMLTo('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
-      textContent('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
-    "
+  data-actions-on-response="
+    innerHTML('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
+    addHTMLTo('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
+    textContent('#someElmSelector', '/../path/to/html/file.html', { 'headerName': 'headerValue' });
+  "
   ```
 
   These three actions have arguments: `elmSelector`, `url` and `headers`. So, they load or append some content that was fetch by `url` and `headers` into the element that you specify by `elmSelector`.
@@ -806,7 +806,7 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
   You can change the value of some input element on response:
 
   ```html
-    data-actions-on-response="changeValueOf('#someElmSelector', '${someResponse.body.someValue}')"
+  data-actions-on-response="changeValueOf('#someElmSelector', '${someResponse.body.someValue}')"
   ```
 
 </details>
@@ -816,11 +816,11 @@ Thanks to HTML5 it's possible for relevant browsers. Read further and you'll see
 You can combine several actions on one response:
 
 ```html
-  data-actions-on-response="
-    mapObjToElm('${someResponse.body}', '#box');
-    showElms('#box');
-    logToConsole('statusCode:', '${someResponse.statusCode}');
-  "
+data-actions-on-response="
+  mapObjToElm('${someResponse.body}', '#box');
+  showElms('#box');
+  logToConsole('statusCode:', '${someResponse.statusCode}');
+"
 ```
 
 You must use delimiter `;` between actions.
@@ -828,10 +828,10 @@ You must use delimiter `;` between actions.
 Also, you can use simple `if` statement for each action if you want them to be invoked only in the particular cases:
 
 ```html
-  data-actions-on-response="
-    if ('${someResponse.statusCode === 200}') mapObjToElm('${someResponse.body}', '#response-box');
-    if ('${someResponse.statusCode !== 200}') mapObjToElm('${someResponse.body}', '#error-box');
-  "
+data-actions-on-response="
+  if ('${someResponse.statusCode === 200}') mapObjToElm('${someResponse.body}', '#response-box');
+  if ('${someResponse.statusCode !== 200}') mapObjToElm('${someResponse.body}', '#error-box');
+"
 ```
 
 You can specify only one action for each `if` statement, and each `if` statement must be without curly braces.
